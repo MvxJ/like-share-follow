@@ -11,7 +11,7 @@ services:
       context: ./
     volumes:
       - .:/var/www/html
-      - ./config/vhost.conf:/etc/apache2/sites-available/000-default.conf
+      - ./config/vhost.conf:/etc/apache2/sites-enabled/000-default.conf
       - cache:/var/www/html/app/var/cache
       - log:/var/www/html/app/var/log
 
