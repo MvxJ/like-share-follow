@@ -27,6 +27,9 @@ services:
       - '4306:3306'
     volumes:
       - ./mysql:/var/lib/mysql
+      - ./config/vhost.conf:/etc/apache2/sites-available/000-default.conf
+      - cache:/var/www/html/app/var/cache
+      - log:/var/www/html/app/log
 
 volumes:
   cache:
