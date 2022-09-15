@@ -1,3 +1,16 @@
-<div>
-    {{ messages }}
-</div>
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        {% if messages|length > 0 %}
+            {% for key, message in messages|slice(0, limit) %}
+                <div>
+                    <a href="{{ url('app_show_one', { id: key }) }}">{{ message.message }}</a>
+                </div>
+                {{ include('hello/_message.html.twig', { message: message }) }}
+            {% endfor %}
+        {% else %}
+            <p>No content</p>
+        {% endif %}
+    </div>
+{% endblock %}

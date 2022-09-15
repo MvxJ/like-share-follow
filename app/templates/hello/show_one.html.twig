@@ -1,3 +1,6 @@
-{% block show_one_message %}
-    <p>Current message: <b>{{ message }}</b></p>
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <p>Current message: <b>{{ message.message }}</b></p>
+    {{ include('hello/_message.html.twig', {message: message}) }}
 {% endblock %}
