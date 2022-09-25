@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\MicroPost;
+use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,17 +30,46 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro/post/add', name: 'app_micro_post_add', priority: 2)]
-    public function add(): Response
+    public function add(Request $request, MicroPostRepository $microPostRepository): Response
     {
-        $microPost = new MicroPost();
-        $form = $this->createFormBuilder($microPost)
-            ->add('title')
-            ->add('text')
-            ->add('submitButton', SubmitType::class, ['label' => 'Save'])
-            ->getForm();
+        $form = $form = $this->createForm(MicroPostType::class, new MicroPost());
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var MicroPost $post */
+            $post = $form->getData();
+            $post->setCreatedAt(new DateTime());
+            $microPostRepository->add($post, true);
+            $this->addFlash('success', 'Your micro post was successfully created!');
+            return $this->redirectToRoute('app_micro_post');
+        }
 
         return $this->renderForm(
             'micro_post/add.html.twig',
+            [
+                'form' => $form
+            ]
+        );
+    }
+
+    #[Route('micro/post/{post}/edit', name: 'app_micro_post_edit')]
+    public function edit(MicroPost $post, Request $request, MicroPostRepository $microPostRepository): Response
+    {
+        $form = $this->createForm(MicroPostType::class, $post);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var MicroPost $post */
+            $post = $form->getData();
+            $microPostRepository->add($post, true);
+            $this->addFlash('success', 'Your micro post was successfully updated!');
+            return $this->redirectToRoute('app_micro_post');
+        }
+
+        return $this->renderForm(
+            'micro_post/edit.html.twig',
             [
                 'form' => $form
             ]
