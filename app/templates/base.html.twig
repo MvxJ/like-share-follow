@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="dark">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -14,13 +14,42 @@
         {% endblock %}
 
 {#        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">#}
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                darkMode: 'class'
+            }
+        </script>
     </head>
-    <body>
-        {% for message in app.flashes('success') %}
-            <div style="color:green">
-                <p>{{ message }}</p>
+    <body class="bg-gray-100 text-gray-800 m-10 dark:bg-gray-800 dark:text-white">
+        <div class="w-full md:w-2/3 mx-auto mb-4 flex justify-between items-center">
+            <div class="text-4xl">
+                <a href="{{ path("app_micro_post") }}">Home</a>
+                {% block bread %}
+
+                {% endblock %}
             </div>
-        {% endfor %}
-        {% block body %}{% endblock %}
+
+            <div class="text-right">
+                <div class="text-sm text-gray-400 dark:text-gray-600">
+                    <div>
+                        Login & Registration Goes Here
+                    </div>
+                    <div>
+                        <a href="{{ path('app_micro_post_add') }}">Add new post!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full md:2-2/3 mx=auto">
+            {% for message in app.flashes('success') %}
+                <div class="rounded-md p-2 border-green-300 bg-green-50 border dark:border-green-600 dark:bg-green-700 dark:text-white mb-4">
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+            {% block body %}{% endblock %}
+        </div>
+
     </body>
 </html>

@@ -2,8 +2,10 @@
 
 {% block title %} Post - {{ post.title }}{% endblock %}
 
+{% block bread %}
+    → Post
+{% endblock %}
+
 {% block body %}
-    <h3>{{ post.title }}</h3>
-    {{ post.createdAt|date('d/m/Y') }}
-    <p style="color: grey">{{ post.text }}</p>
+    {{ include('micro_post/_post.html.twig', {post: post}) }}
 {% endblock %}
