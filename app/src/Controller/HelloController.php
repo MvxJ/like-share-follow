@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Comment;
+use App\Entity\MicroPost;
+use App\Entity\User;
+use App\Entity\UserProfile;
+use App\Repository\MicroPostRepository;
+use App\Repository\UserProfileRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,14 +23,14 @@ class HelloController extends AbstractController
         ['message' => 'Bye!', 'created' => '2021/05/12']
     ];
 
-    #[Route('/{limit<\d+>?3}', name: 'app_index')]
-    public function index(int $limit): Response
+    #[Route('/', name: 'app_index')]
+    public function index(MicroPostRepository $postsRepository): Response
     {
         return $this->render(
             'hello/index.html.twig',
             [
                 'messages' => $this->array,
-                'limit' => $limit
+                'limit' => 3
             ]
         );
     }
