@@ -34,9 +34,18 @@ services:
   adminer:
     container_name: database_adminer
     image: adminer
-    restart: always
     ports:
       - '8001:8080'
+
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    logging:
+      driver: "none"
+    ports:
+      - "8002:8025"
+      - "1025:1025"
+
 volumes:
   cache:
   log:

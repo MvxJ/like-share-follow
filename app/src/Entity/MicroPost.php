@@ -13,6 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class MicroPost
 {
+    public const EDIT = 'POST_EDIT';
+    public const VIEW = 'POST_VIEW';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

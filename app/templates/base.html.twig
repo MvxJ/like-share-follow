@@ -31,19 +31,29 @@
             </div>
 
             <div class="text-right">
-                <div class="text-sm text-gray-400 dark:text-gray-600">
+                <div class="text-sm text-gray-400 dark:text-gray-600 flex">
 {#                    {% if app.user is null %}#}
                     {% if is_granted('IS_AUTHENTICATED_FULLY') == 0 %}
-                        <div>
+                        <div class="ml-2">
                             <a href="{{ path('app_login') }}">
                                 Login
                             </a>
                         </div>
-                    {% else %}
-                        <div>
-                            <a href="{{ path('app_micro_post_add') }}">Add new post!</a>
+                        <div class="ml-2">
+                            <a href="{{ path('app_register') }}">
+                                Register
+                            </a>
                         </div>
-                        <div>
+                    {% else %}
+                        {% if app.user.isVerified %}
+                            <div class="ml-2">
+                                <a href="{{ path('app_micro_post_add') }}">Add new post!</a>
+                            </div>
+                        {% endif %}
+                        <div class="ml-2">
+                            <a href="{{ path('app_settings_profile') }}">Profile settings</a>
+                        </div>
+                        <div class="ml-2">
                             <a href="{{ path('app_logout') }}">
                                 Logout
                             </a>

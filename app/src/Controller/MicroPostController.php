@@ -9,7 +9,6 @@ use App\Form\CommentType;
 use App\Form\MicroPostType;
 use App\Repository\CommentRepository;
 use App\Repository\MicroPostRepository;
-use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +26,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro/post/{post}', name: 'app_micro_post_show')]
+    #[IsGranted(MicroPost::VIEW, 'post')]
     public function showOne(MicroPost $post): Response
     {
         return $this->render('micro_post/show.html.twig', [
@@ -35,7 +35,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro/post/add', name: 'app_micro_post_add', priority: 2)]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_WRITER')]
     public function add(Request $request, MicroPostRepository $microPostRepository): Response
     {
 //        $this->denyAccessUnlessGranted(
@@ -66,9 +66,11 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro/post/{post}/edit', name: 'app_micro_post_edit')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(MicroPost::EDIT, 'post')]
     public function edit(MicroPost $post, Request $request, MicroPostRepository $microPostRepository): Response
     {
+//        $this->denyAccessUnlessGranted(MicroPost::EDIT, $post);
+
         $form = $this->createForm(MicroPostType::class, $post);
         $form->handleRequest($request);
 
