@@ -1,0 +1,9 @@
+<div class="grid grid-cols-1 sm:grid-2 xl:grid-cols-3 gap-4">
+    {% if posts|length > 0 %}
+        {% for post in posts %}
+            {{ include('micro_post/_post.html.twig', {post: post}) }}
+        {% endfor %}
+    {% else %}
+        <p>No content</p>
+    {% endif %}
+</div>

@@ -12,12 +12,18 @@
             {{ post.createdAt|date("M j, Y") }}
         </div>
         <div>
-            <a href="#">
-                Like <span class="px-2 rounded-md bg-gray-200 dark:bg-gray-600">0</span>
-            </a>
+            {% if post.likedBy.contains(app.user) %}
+                <a href="{{ path('app_unlike', { 'id': post.id })}}">
+                    Unlike <span class="px-2 rounded-md bg-gray-200 dark:bg-gray-600">{{ post.likedBy|length }}</span>
+                </a>
+            {% else %}
+                <a href="{{ path('app_like', { 'id': post.id })}}">
+                    Like <span class="px-2 rounded-md bg-gray-200 dark:bg-gray-600">{{ post.likedBy|length }}</span>
+                </a>
+            {% endif %}
         </div>
         <div class="text-sm text-gray-400 dark-text-gray-600">
-            <a href="#">
+            <a href="{{ path('app_profile', {'id': post.author.id}) }}">
                 {{ post.author.email }}
             </a>
         </div>
