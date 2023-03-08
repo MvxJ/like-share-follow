@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\MicroPost;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -60,6 +62,42 @@ class MicroPostRepository extends ServiceEntityRepository
     public function findAllWithComments(): array
     {
         return $this->findAllQuery(withComments: true)->getQuery()->getResult();
+    }
+
+    public function findALlWithMinLikes(int $minLikes): array
+    {
+        $idList = $this->findAllQuery(
+            withLikes: true
+        )->select('p.id')
+            ->groupBy('p.id')
+            ->having('COUNT(l) >= :minLikes')
+            ->setParameter('minLikes', $minLikes)
+            ->getQuery()
+            ->getResult(AbstractQuery::HYDRATE_SCALAR_COLUMN);
+
+        return $this->findAllQuery(
+            withComments: true,
+            withLikes: true,
+            withAuthors: true,
+            withProfiles: true
+        )->where('p.id in (:idList)')
+            ->setParameter('idList', $idList)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByAuthors(Collection|array $authors): array{
+        return $this->findAllQuery(
+            withComments: true,
+            withLikes: true,
+            withAuthors: true,
+            withProfiles: true
+        )->where('p.author IN (:authors)')
+            ->setParameter(
+                'authors',
+                $authors
+            )->getQuery()
+            ->getResult();
     }
 
     public function findAllByAuthor(int|User $author): array{
