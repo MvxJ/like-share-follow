@@ -11,7 +11,7 @@ RUN docker-php-ext-install pdo pdo_mysql
 
 COPY . /var/www/html
 
-#WORKDIR /var/www/html/app
-
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+
+WORKDIR /var/www/html/app

@@ -23,7 +23,7 @@ class HelloController extends AbstractController
         ['message' => 'Bye!', 'created' => '2021/05/12']
     ];
 
-    #[Route('/', name: 'app_index')]
+    #[Route('/home', name: 'app_index')]
     public function index(MicroPostRepository $postsRepository): Response
     {
         return $this->render(
