@@ -50,5 +50,5 @@ App shares additional tools to menage database and catch send emails:
 
 | Service | Web Address    | Creditentials                                                     |
 |---------|----------------|-------------------------------------------------------------------|
-| Mailer  | localhost:8000 | none                                                              |
+| Mailer  | localhost:8002 | none                                                              |
 | Adminer | localhost:8001 | server - database, user - app, password - app, database - symfony |
